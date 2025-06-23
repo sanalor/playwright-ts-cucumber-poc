@@ -1,0 +1,13 @@
+{
+  "name": "playwright-poc-ts",
+  "scripts": {
+    "test": "cucumber-js",
+    "trace:show": "npx playwright show-trace traces/*.zip"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.0.0",
+    "@playwright/test": "^1.35.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

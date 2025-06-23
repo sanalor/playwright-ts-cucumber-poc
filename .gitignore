@@ -23,7 +23,7 @@ traces/
 
 # Cucumber output
 reports/
-*.json
+reports/*.json
 
 # Screenshots
 *.png
