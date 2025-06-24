@@ -1,11 +1,11 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { DuckDuckGoPage } from '../../pages/DuckDuckGoPage';
-import { page } from '../hooks';
+import { playwright } from '../hooks';
 
 let ddg: DuckDuckGoPage;
 
 Given('I open the browser and go to DuckDuckGo', async () => {
-  ddg = new DuckDuckGoPage(page);
+  ddg = new DuckDuckGoPage(playwright.page!);  // usamos non-null assertion porque el hook garantiza que estará definido
   await ddg.navigate();
 });
 
