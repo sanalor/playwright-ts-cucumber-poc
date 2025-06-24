@@ -4,9 +4,6 @@ import { takeScreenshot } from '../utils/helpers';
 import { mkdirSync } from 'fs';
 import path from 'path';
 
-// Detectar si estamos en CI
-const isCI = process.env.CI === 'true';
-
 // Ruta para trazas
 const tracesDir = 'traces';
 mkdirSync(tracesDir, { recursive: true });
@@ -19,11 +16,21 @@ export const playwright = {
 };
 
 Before(async function ({ pickle }) {
+  const isCI = process.env.CI === 'true';
+
   playwright.browser = await chromium.launch({
-    headless: isCI,       // true en GitHub Actions, false en local
-    slowMo: isCI ? 0 : 100, // ralentiza pasos en local para visualización
+    headless: true, // usa siempre headless para evitar errores de display
   });
-  playwright.context = await playwright.browser.newContext();
+
+  // 👇 Diferente configuración de contexto para GitHub Actions
+  playwright.context = isCI
+    ? await playwright.browser.newContext({
+        userAgent:
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        viewport: { width: 1280, height: 720 },
+      })
+    : await playwright.browser.newContext();
+
   playwright.page = await playwright.context.newPage();
 
   await playwright.context.tracing.start({
