@@ -4,11 +4,9 @@ import { takeScreenshot } from '../utils/helpers';
 import { mkdirSync } from 'fs';
 import path from 'path';
 
-// Ruta para trazas
 const tracesDir = 'traces';
 mkdirSync(tracesDir, { recursive: true });
 
-// Objeto exportado para compartir estado
 export const playwright = {
   browser: null as Browser | null,
   context: null as BrowserContext | null,
@@ -19,10 +17,9 @@ Before(async function ({ pickle }) {
   const isCI = process.env.CI === 'true';
 
   playwright.browser = await chromium.launch({
-    headless: true, // usa siempre headless para evitar errores de display
+    headless: true,
   });
 
-  // 👇 Diferente configuración de contexto para GitHub Actions
   playwright.context = isCI
     ? await playwright.browser.newContext({
         userAgent:
